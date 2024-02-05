@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Annapurnata</string>
+    <string name="a_za_z0_9_a_za_z0_9_a_za_z0_9_a_za_z0_9_a_za_z_2">^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$</string>
+</resources>

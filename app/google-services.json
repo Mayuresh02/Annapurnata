@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "242984046619",
+    "project_id": "annapurnata-f6c07",
+    "storage_bucket": "annapurnata-f6c07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242984046619:android:cdb329f93bbccb817f68be",
+        "android_client_info": {
+          "package_name": "com.mayuresh.annapurnata"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGk1tX-ZfOPaE_3Z4LX7RtjQK_lod9gQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
