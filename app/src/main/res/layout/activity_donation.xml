@@ -29,8 +29,9 @@
         android:layout_marginTop="25dp"
         android:background="@drawable/inputshape"
         android:ems="10"
+        android:textColor="@color/white"
         android:hint="Enter Quantity in Persons"
-        android:inputType="number"
+        android:inputType="text"
         android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -83,7 +84,7 @@
         android:ems="10"
         android:hint="Address and Food Prepared On"
         android:importantForAutofill="no"
-        android:inputType="number"
+        android:inputType="text"
         android:padding="15dp"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,33 +93,31 @@
         app:layout_constraintTop_toBottomOf="@+id/aadhar"
         tools:ignore="HardcodedText" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/google_map"-->
-<!--        android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="200dp"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.495"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/description"-->
-<!--        app:uiZoomControls="true"-->
-<!--        tools:ignore="FragmentTagUsage,MissingConstraints"-->
-<!--        tools:layout="@android:layout/simple_gallery_item" />-->
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
+        android:contentDescription="Location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/donation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/signinbuttons"
         android:padding="12dp"
         android:text="Register"
-        android:layout_marginBottom="15dp"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mapView"
         tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
