@@ -1,10 +1,16 @@
 package com.mayuresh.annapurnata.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +29,11 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.mayuresh.annapurnata.ModelClass.Donors;
 import com.mayuresh.annapurnata.R;
 
 
@@ -35,8 +46,14 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
+    FirebaseDatabase database;
+    DatabaseReference reference;
+    Button donate;
+    ProgressDialog pg;
+    EditText quantity1, phone1, aadhar1, description1;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +61,21 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        donate = findViewById(R.id.donate);
+        quantity1 = findViewById(R.id.quantity);
+        phone1 = findViewById(R.id.phone);
+        aadhar1 = findViewById(R.id.aadhar);
+        description1 = findViewById(R.id.description);
+
+        database = FirebaseDatabase.getInstance();
+
         mMapView = findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
+
+        pg = new ProgressDialog(this);
+        pg.setMessage("Please Wait...");
+        pg.setCancelable(false);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -70,6 +99,55 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
         };
         fetchUserLocation();
 
+        donate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pg.show();
+
+                String quantity = quantity1.getText().toString();
+                String phone = phone1.getText().toString();
+                String aadhar = aadhar1.getText().toString();
+                String description = description1.getText().toString();
+                String map = mMap.toString();
+
+                if(TextUtils.isEmpty(quantity) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(aadhar) || TextUtils.isEmpty(description))
+                {
+                    pg.dismiss();
+                    Toast.makeText(DonationActivity.this,"Enter all details",Toast.LENGTH_LONG).show();
+                }
+                else if(phone.length()!=10)
+                {
+                    pg.dismiss();
+                    Toast.makeText(DonationActivity.this,"Phone number should be 10 digit",Toast.LENGTH_LONG).show();
+                }
+                else if(aadhar.length()!=12)
+                {
+                    pg.dismiss();
+                    Toast.makeText(DonationActivity.this,"Aadhar should be 12 digit",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    reference = database.getReference().child("Donors").child(aadhar);
+                    Donors donor = new Donors(quantity, phone, aadhar, description, map);
+
+                    reference.setValue(donor).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                            {
+                                pg.dismiss();
+                                Toast.makeText(DonationActivity.this,"You Saved a Life Today",Toast.LENGTH_LONG).show();
+                            }
+                            else
+                            {
+                                pg.dismiss();
+                                Toast.makeText(DonationActivity.this,"OOPS! Please try again later",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

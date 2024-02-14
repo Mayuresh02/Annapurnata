@@ -82,9 +82,9 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/inputshape"
         android:ems="10"
-        android:hint="Address and Food Prepared On"
+        android:hint="Food Prepared On"
         android:importantForAutofill="no"
-        android:inputType="text"
+        android:inputType="date"
         android:padding="15dp"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,13 +105,13 @@
         tools:ignore="HardcodedText" />
 
     <Button
-        android:id="@+id/donation"
+        android:id="@+id/donate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:background="@drawable/signinbuttons"
         android:padding="12dp"
-        android:text="Register"
+        android:text="Donate"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
