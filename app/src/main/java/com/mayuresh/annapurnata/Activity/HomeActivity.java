@@ -1,24 +1,26 @@
 package com.mayuresh.annapurnata.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.mayuresh.annapurnata.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    CardView donate,receive;
+    CardView donate, receive, drivers, aboutus;
     FirebaseAuth auth;
     Button logout;
     private boolean doubleBackToExitPressedOnce = false;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,11 +31,34 @@ public class HomeActivity extends AppCompatActivity {
 
         donate=findViewById(R.id.donate);
         receive=findViewById(R.id.receive);
+        drivers=findViewById(R.id.drivers);
+        aboutus=findViewById(R.id.aboutus);
 
         donate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomeActivity.this, DonationActivity.class));
+            }
+        });
+
+        receive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this, ReceiverActivity.class));
+            }
+        });
+
+        drivers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this, DriversActivity.class));
+            }
+        });
+
+        aboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this, AboutActivity.class));
             }
         });
 

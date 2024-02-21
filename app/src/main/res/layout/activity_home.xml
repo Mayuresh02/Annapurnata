@@ -92,4 +92,67 @@
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/drivers"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="50dp"
+        app:cardBackgroundColor="#2E8BC0"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/donate">
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/baseline_transfer_within_a_station_24" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="90dp"
+            android:text="Drivers"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,SpUsage" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/aboutus"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        app:cardBackgroundColor="#2E8BC0"
+        app:cardCornerRadius="15dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/drivers"
+        app:layout_constraintTop_toBottomOf="@+id/receive" >
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/about"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="90dp"
+            android:text="About Us"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,SpUsage" />
+
+    </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
