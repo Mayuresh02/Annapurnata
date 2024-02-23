@@ -2,4 +2,5 @@
     <string name="app_name">Annapurnata</string>
     <string name="a_za_z0_9_a_za_z0_9_a_za_z0_9_a_za_z0_9_a_za_z_2">^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$</string>
     <string name="aboutus">Annapurnata is a pioneering platform dedicated to tackling food insecurity and reducing food waste in our communities. Our mission is simple yet profound: to connect food donors with those in need, facilitating the redistribution of surplus food to individuals and organizations that can benefit from it. Together, we can transform lives and build a brighter future for everyone. Join Annapurnata today and be a part of the solution to food insecurity.</string>
+    <style name="Dialoge" />
 </resources>
