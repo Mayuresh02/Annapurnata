@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="15dp">
+    android:layout_margin="5dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
 
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/sName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
@@ -27,7 +27,7 @@
             tools:ignore="HardcodedText" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/sAadhar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Aadhar"
@@ -37,6 +37,32 @@
             android:textSize="19sp"
             tools:ignore="HardcodedText" />
 
+        <ImageView
+            android:id="@+id/sLocation"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="325dp"
+            android:layout_marginTop="27dp"
+            app:srcCompat="@drawable/location"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/sContact"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:srcCompat="@drawable/contact"
+            android:layout_marginStart="280dp"
+            android:layout_marginTop="27dp"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/sAccept"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="235dp"
+            android:layout_marginTop="27dp"
+            app:srcCompat="@drawable/baseline_check_24"
+            tools:ignore="ContentDescription" />
 
     </androidx.cardview.widget.CardView>
 

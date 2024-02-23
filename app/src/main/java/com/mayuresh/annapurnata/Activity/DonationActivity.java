@@ -1,8 +1,8 @@
 package com.mayuresh.annapurnata.Activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -52,8 +52,6 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
     ProgressDialog pg;
     EditText quantity1, phone1, aadhar1, description1;
 
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +75,8 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
         pg.setMessage("Please Wait...");
         pg.setCancelable(false);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
             // Request permission if not granted
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
             return;
@@ -86,10 +84,7 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
 
         locationCallback = new LocationCallback() {
             @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
+            public void onLocationResult(@NonNull LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
                     LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     mMap.addMarker(new MarkerOptions().position(userLocation).title("Current Location"));
@@ -125,6 +120,11 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
                     pg.dismiss();
                     Toast.makeText(DonationActivity.this,"Aadhar should be 12 digit",Toast.LENGTH_LONG).show();
                 }
+                else if(map.isEmpty())
+                {
+                    pg.dismiss();
+                    Toast.makeText(DonationActivity.this,"Turn on the location",Toast.LENGTH_LONG).show();
+                }
                 else
                 {
                     reference = database.getReference().child("Donors").child(aadhar);
@@ -152,17 +152,24 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, start listening for location updates
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, (float) 0, (android.location.LocationListener) locationListener);
+        try {
+            if (requestCode == PERMISSION_REQUEST_CODE)
+            {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, start listening for location updates
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, (float) 0, (android.location.LocationListener) locationListener);
+                    }
+                } else {
+                    // Permission denied, handle accordingly
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                // Permission denied, handle accordingly
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
             }
+        }
+        catch (Exception e){
+            startActivity(new Intent(DonationActivity.this,DonationActivity.class));
+            finish();
         }
     }
 
@@ -186,6 +193,17 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
         }
         mMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
     }
     @Override
     protected void onDestroy() {

@@ -7,6 +7,8 @@ public class Donors {
     public String aadhar;
     public String description;
     public String map;
+
+    public Donors() {}
     public Donors(String quantity, String phone, String aadhar, String description, String map) {
         this.quantity = quantity;
         this.phone = phone;
