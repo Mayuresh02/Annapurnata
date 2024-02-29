@@ -18,6 +18,7 @@ import com.mayuresh.annapurnata.ModelClass.Donors;
 import com.mayuresh.annapurnata.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ReceiverActivity extends AppCompatActivity {
 
@@ -27,6 +28,7 @@ public class ReceiverActivity extends AppCompatActivity {
     DonorAdapter adapter;
     ArrayList<Donors> list;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("In Receriver");
@@ -46,12 +48,12 @@ public class ReceiverActivity extends AppCompatActivity {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot:snapshot.getChildren())
-                {
-                    Donors donors=dataSnapshot.getValue(Donors.class);
-                    System.out.println(donors.aadhar);
+                list.clear(); // Clear the list before adding new data
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()) {
+                    Donors donors = dataSnapshot.getValue(Donors.class);
                     list.add(donors);
                 }
+                Collections.reverse(list); // Reverse the order of the list
                 adapter.notifyDataSetChanged();
             }
 
@@ -60,5 +62,7 @@ public class ReceiverActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 }

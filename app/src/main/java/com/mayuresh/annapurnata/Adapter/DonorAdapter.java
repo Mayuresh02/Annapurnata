@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,8 +31,6 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.MyViewHolder
 {
     Context context;
     ArrayList<Donors> list;
-    final int SEND_SMS_CODE = 1;
-    final int CALL_PHONE_CODE = 1;
 
     public DonorAdapter(Context context, ArrayList<Donors> list) {
         this.context = context;
@@ -50,6 +49,8 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.MyViewHolder
         Donors donors=list.get(position);
         holder.name.setText(donors.getDescription());
         holder.aadhar.setText(donors.getAadhar());
+
+        //Contact
         holder.sContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,8 +98,49 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.MyViewHolder
                         dialog.dismiss();
                     }
                 });
+
             }
         });
+        //Contact End
+
+        //Fetch Location
+        holder.sLocation.setOnClickListener(v -> {
+            String map = donors.map;
+
+            Uri uri = Uri.parse("google.navigation:q=" + map);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+            if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                // Start the activity if there's an app available
+                context.startActivity(mapIntent);
+            }
+
+        });
+        //Fetch Location End
+
+        //OpenInfo
+        holder.openinfo.setOnClickListener(v -> {
+            showInfo(donors);
+        });
+    }
+
+    void showInfo(Donors donors)
+    {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.openinfolayout);
+
+        TextView oname = dialog.findViewById(R.id.oname);
+        TextView oaadhar = dialog.findViewById(R.id.oaadhar);
+        TextView oquantity = dialog.findViewById(R.id.oquantity);
+        TextView ophone = dialog.findViewById(R.id.ophone);
+
+        oname.setText(donors.getDescription());
+        oaadhar.setText(donors.getAadhar());
+        oquantity.setText(donors.getQuantity());
+        ophone.setText(donors.getPhone());
+
+        dialog.show();
     }
 
     @Override
@@ -119,11 +161,14 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.MyViewHolder
     {
         TextView name, aadhar;
         ImageView sAccept, sContact, sLocation;
+        ConstraintLayout openinfo;
         public MyViewHolder(@NonNull View itemView)
         {
             super(itemView);
             name = itemView.findViewById(R.id.sName);
             aadhar = itemView.findViewById(R.id.sAadhar);
+
+            openinfo = itemView.findViewById(R.id.openinfo);
 
             sAccept = itemView.findViewById(R.id.sAccept);
             sContact = itemView.findViewById(R.id.sContact);

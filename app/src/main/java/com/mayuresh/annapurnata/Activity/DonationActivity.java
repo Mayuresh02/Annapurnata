@@ -110,6 +110,11 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
                     pg.dismiss();
                     Toast.makeText(DonationActivity.this,"Enter all details",Toast.LENGTH_LONG).show();
                 }
+                else if(quantity.equals("0") || quantity.equals("Zero") || quantity.equals("zero"))
+                {
+                    pg.dismiss();
+                    Toast.makeText(DonationActivity.this,"Quantity should be greater than 0",Toast.LENGTH_LONG).show();
+                }
                 else if(phone.length()!=10)
                 {
                     pg.dismiss();
