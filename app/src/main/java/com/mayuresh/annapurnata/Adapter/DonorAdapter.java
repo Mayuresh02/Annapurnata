@@ -22,6 +22,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mayuresh.annapurnata.ModelClass.Donors;
 import com.mayuresh.annapurnata.R;
 
@@ -31,10 +35,12 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.MyViewHolder
 {
     Context context;
     ArrayList<Donors> list;
+    String receiver;
 
-    public DonorAdapter(Context context, ArrayList<Donors> list) {
+    public DonorAdapter(Context context, ArrayList<Donors> list, String receiver) {
         this.context = context;
         this.list = list;
+        this.receiver = receiver;
     }
 
     @NonNull
@@ -49,6 +55,42 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.MyViewHolder
         Donors donors=list.get(position);
         holder.name.setText(donors.getDescription());
         holder.aadhar.setText(donors.getAadhar());
+
+        holder.sAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int adapterPosition = holder.getAdapterPosition();
+
+                if (adapterPosition != RecyclerView.NO_POSITION)
+                {
+                    Donors donations = list.get(adapterPosition);
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Donors");
+                    reference.child(donations.getAadhar()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            if (checkPermission(Manifest.permission.SEND_SMS)) {
+                                SmsManager smsManager = SmsManager.getDefault();
+                                ArrayList<String> message = smsManager.divideMessage("Dear "+donors.description+". I "+receiver+" sending this message to you because I saw your donation on Annapurnata:- Food Donation Application and I am interested in taking your donation so kindly help me through it. Thank you for your support!!!");
+                                smsManager.sendMultipartTextMessage(donors.phone, null, message, null, null);
+                                Toast.makeText(context, "Message Sent", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Sorry!!! Try again after some time.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                    list.remove(adapterPosition);
+                    notifyDataSetChanged();
+                    notifyItemRemoved(adapterPosition);
+                }
+            }
+        });
 
         //Contact
         holder.sContact.setOnClickListener(new View.OnClickListener() {
@@ -105,17 +147,21 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.MyViewHolder
 
         //Fetch Location
         holder.sLocation.setOnClickListener(v -> {
-            String map = donors.map;
+            String coordinates = donors.getMap();
+            String[] parts=coordinates.substring(1,coordinates.length()-1).split(",");
+            double lat = Double.parseDouble(parts[0]);
+            double lng = Double.parseDouble(parts[1]);
 
-            Uri uri = Uri.parse("google.navigation:q=" + map);
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + lat + "," + lng);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
 
             if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
-                // Start the activity if there's an app available
                 context.startActivity(mapIntent);
+            } else {
+                // Handle case when Google Maps is not installed
+                Toast.makeText(context, "Please Install Google Maps", Toast.LENGTH_LONG).show();
             }
-
         });
         //Fetch Location End
 
@@ -141,6 +187,11 @@ public class DonorAdapter extends RecyclerView.Adapter<DonorAdapter.MyViewHolder
         ophone.setText(donors.getPhone());
 
         dialog.show();
+    }
+
+    void removeDonationFromDatabase(String aadhar)
+    {
+
     }
 
     @Override

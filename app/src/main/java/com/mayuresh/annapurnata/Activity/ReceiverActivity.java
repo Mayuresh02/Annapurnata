@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,11 +39,14 @@ public class ReceiverActivity extends AppCompatActivity {
 
         donors_list = findViewById(R.id.donors_list);
         reference = FirebaseDatabase.getInstance().getReference().child("Donors");
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
 
         donors_list.setHasFixedSize(true);
         donors_list.setLayoutManager(new LinearLayoutManager(this));
         list = new ArrayList<>();
-        adapter = new DonorAdapter(this, list);
+        String receiver = currentUser.getEmail();
+        adapter = new DonorAdapter(this, list, receiver);
         donors_list.setAdapter(adapter);
 
         reference.addValueEventListener(new ValueEventListener() {

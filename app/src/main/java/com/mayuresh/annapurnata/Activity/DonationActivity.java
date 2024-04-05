@@ -36,6 +36,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.mayuresh.annapurnata.ModelClass.Donors;
 import com.mayuresh.annapurnata.R;
 
+import java.util.Locale;
+
 
 public class DonationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -51,6 +53,7 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
     Button donate;
     ProgressDialog pg;
     EditText quantity1, phone1, aadhar1, description1;
+    String latlang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,7 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
                     LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     mMap.addMarker(new MarkerOptions().position(userLocation).title("Current Location"));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                    latlang = String.format(Locale.getDefault(), "(%.7f,%.7f)", userLocation.latitude, userLocation.longitude);
                 }
             }
         };
@@ -133,7 +137,7 @@ public class DonationActivity extends AppCompatActivity implements OnMapReadyCal
                 else
                 {
                     reference = database.getReference().child("Donors").child(aadhar);
-                    Donors donor = new Donors(quantity, phone, aadhar, description, map);
+                    Donors donor = new Donors(quantity, phone, aadhar, description, latlang);
 
                     reference.setValue(donor).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
